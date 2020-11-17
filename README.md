@@ -1,16 +1,16 @@
 # Motor Control Python
 A motor control library for Python currently supporting one motor with more to be added in the future
-##Installation
+## Installation
 Installed through pip install MotorControlPython
 
-##Usage
+## Usage
 
 
-##Release Notes
+## Release Notes
 
-##Plans
+## Plans
 Add motors
 
-##Credits
+## Credits
 
-##License
+## License
