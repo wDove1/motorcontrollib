@@ -12,5 +12,7 @@ Installed through pip install MotorControlPython
 Add motors
 
 ## Credits
+Thanks to Matt at https://www.raspberrypi-spy.co.uk/ for the motor control script that got this project started
 
 ## License
+This is made available under an Apache v2.0 license
