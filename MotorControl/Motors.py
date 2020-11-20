@@ -91,3 +91,13 @@ class M_28BJY48_ULN2003_RPI:
         '''convers degrees to steps for internal use within the function'''
         return degrees/self.motorDetails['baseAngle']
 
+class Virtual:
+    def runVelocityT(self,degreesPs,time):
+        t1=time.time()
+        print(degreesPs*time)
+        print(time)
+        print(degreesPs)
+        t2=time.time()
+        time.sleep(time-(t2-t1))
+        
+
