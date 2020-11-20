@@ -1,8 +1,10 @@
-import time
+import time as t
 import sys
-import RPi.GPIO as GPIO
 
-from Config import *
+if sys.platform == 'Linux':
+    import RPi.GPIO as GPIO
+
+from .Config import *
 class M_28BJY48_ULN2003_RPI:
     motorDetails={'motorName':'28BJY-48','controllerName':'ULN2003','voltage':5,'baseAngle':0.087890625,'useAngle1':0.703125,'useAngle2':0.3515625}
 
@@ -91,13 +93,13 @@ class M_28BJY48_ULN2003_RPI:
         '''convers degrees to steps for internal use within the function'''
         return degrees/self.motorDetails['baseAngle']
 
-class Virtual:
+class M_Virtual:
     def runVelocityT(self,degreesPs,time):
-        t1=time.time()
+        t1=t.time()
         print(degreesPs*time)
         print(time)
         print(degreesPs)
-        t2=time.time()
-        time.sleep(time-(t2-t1))
+        t2=t.time()
+        t.sleep(time-(t2-t1))
         
 

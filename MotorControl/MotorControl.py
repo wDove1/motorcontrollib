@@ -1,9 +1,10 @@
-from Motors import *
+from .Motors import *
 
 
-class MotorControl:
+class Motor:
+
     motorA=None
-    motors=[M_28BJY48_ULN2003_RPI(),M_Virtual]
+    motors=[M_28BJY48_ULN2003_RPI(),M_Virtual()]
 
         
 
@@ -13,8 +14,8 @@ class MotorControl:
             self.motorA.setup(interfaceDetails['GPIOPins'])
 
         if motorName=='virtual' and controllerName=='virtual' and computerName=='virtual':
-            self.motorA==self.motors[1]
-            self.motorA.setup()
+            self.motorA=self.motors[1]
+            #self.motorA.setup()
         
         
         
