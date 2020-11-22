@@ -94,12 +94,35 @@ class M_28BJY48_ULN2003_RPI:
         return degrees/self.motorDetails['baseAngle']
 
 class M_Virtual:
+    maxSpeed=48
+
+    def __init__(self,performanceData=None):
+        if performanceData!=None:
+            self.maxSpeed=performanceData['maxSpeed']
+
     def runVelocityT(self,degreesPs,time):
         t1=t.time()
-        print(degreesPs*time)
-        print(time)
-        print(degreesPs)
+        print('distance: ',degreesPs*time)
+        print('time: ',time)
+        print('Velocity: ',degreesPs)
         t2=t.time()
         t.sleep(time-(t2-t1))
+
+    def runVelocityD(self,degreesPs,distance):
+        t1=t.time()
+        print('distance: ',distance)
+        print('time: ',distance/degreesPs)
+        print('Velocity: ',degreesPs)
+        t2=t.time()
+        t.sleep((distance/degreesPs)-(t2-t1))
+
+    def runDisplacement(self,distance):
+        t1=t.time()
+        print('distance: ',distance)
+        print('time: ',distance/self.maxSpeed)
+        print('Velocity: ',self.maxSpeed)
+        t2=t.time()
+        t.sleep((distance/self.maxSpeed)-(t2-t1))
+
         
 

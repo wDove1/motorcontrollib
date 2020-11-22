@@ -1,2 +1,8 @@
+import json
 class Config:
-    pass
+    
+
+
+
+    def getMeasuredData(self,path):
+        return json.loads(open(path))
