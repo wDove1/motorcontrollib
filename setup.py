@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='MotorControl',
-    version='0.0.4',
+    version='0.0.8',
     license='Apache License 2.0',
     author='William Dove',
     author_email='williamtdove@gmail.com',
