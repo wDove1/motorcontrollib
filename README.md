@@ -3,10 +3,10 @@ A motor control library for Python currently supporting one motor with more to b
 This was originally created to control motors for my computer science project but should be useful in multiple applications.
 Also can I say this is my first project on Github and I am still at school so please understand if anything is not quite up to scratch.
 ## Installation
-Installed through pip install MotorControlPython.
+Installed through pip install MotorControlLib.
 
 ## Usage
-once downloaded import through 'from MotorControl import Motor'.
+once downloaded import through 'from MotorControlLib import Motor'.
 
 ## Release Notes
 
