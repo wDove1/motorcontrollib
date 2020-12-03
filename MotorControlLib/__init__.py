@@ -1,1 +1,1 @@
-from MotorControl.MotorControl import Motor
+from MotorControlLib.MotorControl import Motor

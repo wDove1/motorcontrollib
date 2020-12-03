@@ -1,0 +1,11 @@
+site_name: Python MotorControlLib
+nav:
+    - Home: index.md
+    - API code: API-reference.md
+    - Motor code: Motors-reference.md
+theme:
+  name: "material"
+
+plugins:
+  - search
+  - mkdocstrings
