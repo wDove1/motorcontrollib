@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='motorcontrollib',
-    version='0.0.12',
+    version='0.0.0',
     license='Apache License 2.0',
     author='William Dove',
     author_email='williamtdove@gmail.com',

@@ -4,7 +4,9 @@ import sys
 
 import RPi.GPIO as GPIO
 
-from .Config import *
+class MotorTemplate:
+    pass
+
 class M_28BJY48_ULN2003_RPI:
     """A class to control the 28BYJ48 and ULN2003 motor
     Attributes: 
@@ -21,7 +23,7 @@ class M_28BJY48_ULN2003_RPI:
     maxWaitTime=0.0016
     stepPins=None
 
-    def setup(self,stepPins):
+    def __init__(self,stepPins):
         # Use BCM GPIO references
         # instead of physical pin numbers
         GPIO.setmode(GPIO.BCM)
@@ -43,8 +45,10 @@ class M_28BJY48_ULN2003_RPI:
 
 
         """
-
-        
+        print('motor reached')
+        print('steps =', steps)
+        print('additionalWaitTime=',additionalWaitTime)
+        print('step pins=',self.stepPins)
         stepCount = 8
         if steps<0:
             stepDir=-1
@@ -107,6 +111,7 @@ class M_28BJY48_ULN2003_RPI:
             degreesPs:The angular velocity
             time:The run time
         """
+        print('library reached 2')
         if degreesPs==0 or time==0:
             raise ValueError('No zero values aloud')
         if degreesPs>self.maxSpeed:
@@ -128,9 +133,9 @@ class M_Virtual:
     """A virtual Motor to allow the library to be used for testing when a real motor is not available"""
     maxSpeed=48
 
-    def __init__(self,performanceData=None):
-        if performanceData!=None:
-            self.maxSpeed=performanceData['maxSpeed']
+    def __init__(self):
+        pass
+
 
     def runVelocityT(self,degreesPs,time):
         """A method to run at a set speed for a set time
