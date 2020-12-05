@@ -12,7 +12,7 @@ class Motor:
             self.motor=self.motors[0]
             self.motor.setup(interfaceDetails['GPIOPins'])
 
-        if motorName=='virtual' and controllerName=='virtual' and computerName=='virtual':
+        elif motorName=='virtual' and controllerName=='virtual' and computerName=='virtual':
             self.motor=self.motors[1]
             #self.motorA.setup()
 

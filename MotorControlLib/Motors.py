@@ -1,8 +1,8 @@
 import time as t
 import sys
 
-if sys.platform == 'Linux':
-    import RPi.GPIO as GPIO
+
+import RPi.GPIO as GPIO
 
 from .Config import *
 class M_28BJY48_ULN2003_RPI:
@@ -73,7 +73,7 @@ class M_28BJY48_ULN2003_RPI:
             if (stepCounter<0):
                 stepCounter = 7
           # Wait before moving on
-            time.sleep(self.maxWaitTime+additionalWaitTime)
+            t.sleep(self.maxWaitTime+additionalWaitTime)
 
     def runDisplacement(self,degrees):
         """A method to run a set distance
