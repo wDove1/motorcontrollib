@@ -5,9 +5,17 @@ import sys
 import RPi.GPIO as GPIO
 
 class MotorTemplate:
-    pass
+    
+    def runDisplacement(self,degrees: float):
+        pass
 
-class M_28BJY48_ULN2003_RPI:
+    def runVelocityD(self,degreesPs: float ,distance: float):
+        pass
+
+    def runVelocityT(self,degreesPs: float ,time: float):
+        pass
+
+class M_28BJY48_ULN2003_RPI(MotorTemplate):
     """A class to control the 28BYJ48 and ULN2003 motor
     Attributes: 
         motorDetails: A dictionary of specs
@@ -129,7 +137,7 @@ class M_28BJY48_ULN2003_RPI:
         '''convers degrees to steps for internal use within the function'''
         return degrees/self.motorDetails['baseAngle']
 
-class M_Virtual:
+class M_Virtual(MotorTemplate):
     """A virtual Motor to allow the library to be used for testing when a real motor is not available"""
     maxSpeed=48
 
