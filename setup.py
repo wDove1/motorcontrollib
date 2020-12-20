@@ -1,7 +1,9 @@
 from setuptools import setup, find_packages
+from Cython.Build import cythonize
 setup(
+    ext_modules = cythonize("motorcontrollib/*.pyx",annotate=True),
     name='motorcontrollib',
-    version='0.0.0',
+    version='0.0.16',
     license='Apache License 2.0',
     author='William Dove',
     author_email='williamtdove@gmail.com',
