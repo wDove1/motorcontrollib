@@ -136,8 +136,8 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
         Todo:
             investigate what happens when there is a misalignment between wait time and speed
         """
-        print(self.maxSpeed)
-        print(degreesPs)
+        #print(self.maxSpeed)
+        #print(degreesPs)
 
         if degreesPs==0 or time==0:
             raise ValueError('No zero values aloud')
