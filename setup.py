@@ -3,7 +3,7 @@ from Cython.Build import cythonize
 setup(
     ext_modules = cythonize("motorcontrollib/*.pyx",annotate=True),
     name='motorcontrollib',
-    version='0.1.0',
+    version='0.1.1',
     license='Apache License 2.0',
     author='William Dove',
     author_email='williamtdove@gmail.com',

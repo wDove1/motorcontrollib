@@ -5,7 +5,7 @@ import warnings
 import RPi.GPIO as GPIO
 import numpy
 class MotorTemplate:
-    
+    maxSpeed: float = 0.0
     def runDisplacement(self,degrees: float):
         pass
 
@@ -14,8 +14,9 @@ class MotorTemplate:
 
     def runVelocityT(self,degreesPs: float ,time: float):
         pass
-
-
+ 
+    def getMaxSpeed(self):
+        return self.maxSpeed 
 
 
 class M_28BJY48_ULN2003_RPI(MotorTemplate):

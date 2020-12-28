@@ -1120,6 +1120,17 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
+/* SetNameInClass.proto */
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+#define __Pyx_SetNameInClass(ns, name, value)\
+    (likely(PyDict_CheckExact(ns)) ? _PyDict_SetItem_KnownHash(ns, name, value, ((PyASCIIObject *) name)->hash) : PyObject_SetItem(ns, name, value))
+#elif CYTHON_COMPILING_IN_CPYTHON
+#define __Pyx_SetNameInClass(ns, name, value)\
+    (likely(PyDict_CheckExact(ns)) ? PyDict_SetItem(ns, name, value) : PyObject_SetItem(ns, name, value))
+#else
+#define __Pyx_SetNameInClass(ns, name, value)  PyObject_SetItem(ns, name, value)
+#endif
+
 /* FetchCommonType.proto */
 static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type);
 
@@ -1182,17 +1193,6 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml,
                                       PyObject *closure,
                                       PyObject *module, PyObject *globals,
                                       PyObject* code);
-
-/* SetNameInClass.proto */
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
-#define __Pyx_SetNameInClass(ns, name, value)\
-    (likely(PyDict_CheckExact(ns)) ? _PyDict_SetItem_KnownHash(ns, name, value, ((PyASCIIObject *) name)->hash) : PyObject_SetItem(ns, name, value))
-#elif CYTHON_COMPILING_IN_CPYTHON
-#define __Pyx_SetNameInClass(ns, name, value)\
-    (likely(PyDict_CheckExact(ns)) ? PyDict_SetItem(ns, name, value) : PyObject_SetItem(ns, name, value))
-#else
-#define __Pyx_SetNameInClass(ns, name, value)  PyObject_SetItem(ns, name, value)
-#endif
 
 /* CalculateMetaclass.proto */
 static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases);
@@ -1343,6 +1343,7 @@ static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_currentPin[] = "currentPin";
 static const char __pyx_k_distance_2[] = "distance: ";
 static const char __pyx_k_neededTime[] = "neededTime";
+static const char __pyx_k_getMaxSpeed[] = "getMaxSpeed";
 static const char __pyx_k_minWaitTime[] = "minWaitTime";
 static const char __pyx_k_setMaxSpeed[] = "setMaxSpeed";
 static const char __pyx_k_stepCounter[] = "stepCounter";
@@ -1364,6 +1365,7 @@ static const char __pyx_k_M_Virtual_runVelocityD[] = "M_Virtual.runVelocityD";
 static const char __pyx_k_M_Virtual_runVelocityT[] = "M_Virtual.runVelocityT";
 static const char __pyx_k_motorcontrollib_Motors[] = "motorcontrollib.Motors";
 static const char __pyx_k_M_Virtual_runDisplacement[] = "M_Virtual.runDisplacement";
+static const char __pyx_k_MotorTemplate_getMaxSpeed[] = "MotorTemplate.getMaxSpeed";
 static const char __pyx_k_MotorTemplate_runVelocityD[] = "MotorTemplate.runVelocityD";
 static const char __pyx_k_MotorTemplate_runVelocityT[] = "MotorTemplate.runVelocityT";
 static const char __pyx_k_motorcontrollib_Motors_pyx[] = "motorcontrollib/Motors.pyx";
@@ -1399,6 +1401,7 @@ static PyObject *__pyx_n_s_M_Virtual_runDisplacement;
 static PyObject *__pyx_n_s_M_Virtual_runVelocityD;
 static PyObject *__pyx_n_s_M_Virtual_runVelocityT;
 static PyObject *__pyx_n_s_MotorTemplate;
+static PyObject *__pyx_n_s_MotorTemplate_getMaxSpeed;
 static PyObject *__pyx_n_s_MotorTemplate_runDisplacement;
 static PyObject *__pyx_n_s_MotorTemplate_runVelocityD;
 static PyObject *__pyx_n_s_MotorTemplate_runVelocityT;
@@ -1424,6 +1427,7 @@ static PyObject *__pyx_n_s_doc;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_u_float;
+static PyObject *__pyx_n_s_getMaxSpeed;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_init;
@@ -1481,6 +1485,7 @@ static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_runDisplacement(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, CYTHON_UNUSED double __pyx_v_degrees); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_2runVelocityD(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, CYTHON_UNUSED double __pyx_v_degreesPs, CYTHON_UNUSED double __pyx_v_distance); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_4runVelocityT(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, CYTHON_UNUSED double __pyx_v_degreesPs, CYTHON_UNUSED double __pyx_v_time); /* proto */
+static PyObject *__pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_6getMaxSpeed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_stepPins, PyObject *__pyx_v_maxSpeed, PyObject *__pyx_v_minWaitTime); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2motor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, float __pyx_v_steps, float __pyx_v_additionalWaitTime); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_4runDisplacement(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_degrees); /* proto */
@@ -1493,6 +1498,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual___init__(CYTHON_U
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, PyObject *__pyx_v_degreesPs, PyObject *__pyx_v_time); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, PyObject *__pyx_v_degreesPs, PyObject *__pyx_v_distance); /* proto */
 static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_distance); /* proto */
+static PyObject *__pyx_float_0_0;
 static PyObject *__pyx_float_48_0;
 static PyObject *__pyx_float_0_0016;
 static PyObject *__pyx_float_0_703125;
@@ -1509,7 +1515,7 @@ static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__12;
-static PyObject *__pyx_tuple__13;
+static PyObject *__pyx_tuple__14;
 static PyObject *__pyx_tuple__15;
 static PyObject *__pyx_tuple__17;
 static PyObject *__pyx_tuple__19;
@@ -1520,11 +1526,12 @@ static PyObject *__pyx_tuple__27;
 static PyObject *__pyx_tuple__29;
 static PyObject *__pyx_tuple__31;
 static PyObject *__pyx_tuple__33;
+static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_codeobj__5;
 static PyObject *__pyx_codeobj__7;
 static PyObject *__pyx_codeobj__9;
 static PyObject *__pyx_codeobj__11;
-static PyObject *__pyx_codeobj__14;
+static PyObject *__pyx_codeobj__13;
 static PyObject *__pyx_codeobj__16;
 static PyObject *__pyx_codeobj__18;
 static PyObject *__pyx_codeobj__20;
@@ -1535,11 +1542,12 @@ static PyObject *__pyx_codeobj__28;
 static PyObject *__pyx_codeobj__30;
 static PyObject *__pyx_codeobj__32;
 static PyObject *__pyx_codeobj__34;
+static PyObject *__pyx_codeobj__36;
 /* Late includes */
 
 /* "motorcontrollib/Motors.pyx":9
  * class MotorTemplate:
- * 
+ *     maxSpeed: float = 0.0
  *     def runDisplacement(self,degrees: float):             # <<<<<<<<<<<<<<
  *         pass
  * 
@@ -1814,7 +1822,71 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_4runVelocity
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":39
+/* "motorcontrollib/Motors.pyx":18
+ *         pass
+ * 
+ *     def getMaxSpeed(self):             # <<<<<<<<<<<<<<
+ *         return self.maxSpeed
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15motorcontrollib_6Motors_13MotorTemplate_7getMaxSpeed(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_15motorcontrollib_6Motors_13MotorTemplate_7getMaxSpeed = {"getMaxSpeed", (PyCFunction)__pyx_pw_15motorcontrollib_6Motors_13MotorTemplate_7getMaxSpeed, METH_O, 0};
+static PyObject *__pyx_pw_15motorcontrollib_6Motors_13MotorTemplate_7getMaxSpeed(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("getMaxSpeed (wrapper)", 0);
+  __pyx_r = __pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_6getMaxSpeed(__pyx_self, ((PyObject *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15motorcontrollib_6Motors_13MotorTemplate_6getMaxSpeed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("getMaxSpeed", 0);
+
+  /* "motorcontrollib/Motors.pyx":19
+ * 
+ *     def getMaxSpeed(self):
+ *         return self.maxSpeed             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "motorcontrollib/Motors.pyx":18
+ *         pass
+ * 
+ *     def getMaxSpeed(self):             # <<<<<<<<<<<<<<
+ *         return self.maxSpeed
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("motorcontrollib.Motors.MotorTemplate.getMaxSpeed", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "motorcontrollib/Motors.pyx":40
  *     stepPins=None
  * 
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):             # <<<<<<<<<<<<<<
@@ -1865,7 +1937,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_1__i
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_stepPins)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 4, 1); __PYX_ERR(0, 39, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 4, 1); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -1881,7 +1953,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_1__i
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 39, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 40, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1902,7 +1974,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_1__i
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 39, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 40, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1934,16 +2006,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "motorcontrollib/Motors.pyx":40
+  /* "motorcontrollib/Motors.pyx":41
  * 
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):
  *         warnings.warn('this class does not support high precision or realtime operation')             # <<<<<<<<<<<<<<
  *         if maxSpeed!=None:
  *             self.maxSpeed=maxSpeed
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_warnings); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_warnings); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_warn); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_warn); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -1958,33 +2030,33 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_kp_s_this_class_does_not_support_high) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_kp_s_this_class_does_not_support_high);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":41
+  /* "motorcontrollib/Motors.pyx":42
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):
  *         warnings.warn('this class does not support high precision or realtime operation')
  *         if maxSpeed!=None:             # <<<<<<<<<<<<<<
  *             self.maxSpeed=maxSpeed
  *         if minWaitTime!=None:
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_maxSpeed, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_maxSpeed, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "motorcontrollib/Motors.pyx":42
+    /* "motorcontrollib/Motors.pyx":43
  *         warnings.warn('this class does not support high precision or realtime operation')
  *         if maxSpeed!=None:
  *             self.maxSpeed=maxSpeed             # <<<<<<<<<<<<<<
  *         if minWaitTime!=None:
  *             self.minWaitTime=minWaitTime
  */
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed, __pyx_v_maxSpeed) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed, __pyx_v_maxSpeed) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
 
-    /* "motorcontrollib/Motors.pyx":41
+    /* "motorcontrollib/Motors.pyx":42
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):
  *         warnings.warn('this class does not support high precision or realtime operation')
  *         if maxSpeed!=None:             # <<<<<<<<<<<<<<
@@ -1993,28 +2065,28 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":43
+  /* "motorcontrollib/Motors.pyx":44
  *         if maxSpeed!=None:
  *             self.maxSpeed=maxSpeed
  *         if minWaitTime!=None:             # <<<<<<<<<<<<<<
  *             self.minWaitTime=minWaitTime
  *         # Use BCM GPIO references
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_minWaitTime, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_minWaitTime, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "motorcontrollib/Motors.pyx":44
+    /* "motorcontrollib/Motors.pyx":45
  *             self.maxSpeed=maxSpeed
  *         if minWaitTime!=None:
  *             self.minWaitTime=minWaitTime             # <<<<<<<<<<<<<<
  *         # Use BCM GPIO references
  *         # instead of physical pin numbers
  */
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_minWaitTime, __pyx_v_minWaitTime) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_minWaitTime, __pyx_v_minWaitTime) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
 
-    /* "motorcontrollib/Motors.pyx":43
+    /* "motorcontrollib/Motors.pyx":44
  *         if maxSpeed!=None:
  *             self.maxSpeed=maxSpeed
  *         if minWaitTime!=None:             # <<<<<<<<<<<<<<
@@ -2023,21 +2095,21 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":47
+  /* "motorcontrollib/Motors.pyx":48
  *         # Use BCM GPIO references
  *         # instead of physical pin numbers
  *         GPIO.setmode(GPIO.BCM)             # <<<<<<<<<<<<<<
  *         # Define GPIO signals to use
  *         # Physical pins 11,15,16,18
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_setmode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_setmode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_BCM); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_BCM); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -2053,36 +2125,36 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":51
+  /* "motorcontrollib/Motors.pyx":52
  *         # Physical pins 11,15,16,18
  *         # GPIO17,GPIO22,GPIO23,GPIO24
  *         self.stepPins = stepPins             # <<<<<<<<<<<<<<
  *         # Set all pins as output
  *         for pin in self.stepPins:
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_stepPins, __pyx_v_stepPins) < 0) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_stepPins, __pyx_v_stepPins) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":53
+  /* "motorcontrollib/Motors.pyx":54
  *         self.stepPins = stepPins
  *         # Set all pins as output
  *         for pin in self.stepPins:             # <<<<<<<<<<<<<<
  *             #print("Setup pins")
  *             GPIO.setup(pin,GPIO.OUT)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_stepPins); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_stepPins); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -2090,17 +2162,17 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -2110,7 +2182,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 53, __pyx_L1_error)
+          else __PYX_ERR(0, 54, __pyx_L1_error)
         }
         break;
       }
@@ -2119,21 +2191,21 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
     __Pyx_XDECREF_SET(__pyx_v_pin, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "motorcontrollib/Motors.pyx":55
+    /* "motorcontrollib/Motors.pyx":56
  *         for pin in self.stepPins:
  *             #print("Setup pins")
  *             GPIO.setup(pin,GPIO.OUT)             # <<<<<<<<<<<<<<
  *             GPIO.output(pin, False)
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_setup); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_setup); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_OUT); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_OUT); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_5 = NULL;
@@ -2151,7 +2223,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_pin, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -2160,14 +2232,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_pin, __pyx_t_8};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_5) {
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -2178,23 +2250,23 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
       __Pyx_GIVEREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_8);
       __pyx_t_8 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "motorcontrollib/Motors.pyx":56
+    /* "motorcontrollib/Motors.pyx":57
  *             #print("Setup pins")
  *             GPIO.setup(pin,GPIO.OUT)
  *             GPIO.output(pin, False)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_output); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_output); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -2212,7 +2284,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_10)) {
       PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_pin, Py_False};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -2220,13 +2292,13 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
       PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_pin, Py_False};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_3) {
         __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -2237,14 +2309,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
       __Pyx_INCREF(Py_False);
       __Pyx_GIVEREF(Py_False);
       PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_9, Py_False);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "motorcontrollib/Motors.pyx":53
+    /* "motorcontrollib/Motors.pyx":54
  *         self.stepPins = stepPins
  *         # Set all pins as output
  *         for pin in self.stepPins:             # <<<<<<<<<<<<<<
@@ -2254,7 +2326,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "motorcontrollib/Motors.pyx":39
+  /* "motorcontrollib/Motors.pyx":40
  *     stepPins=None
  * 
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):             # <<<<<<<<<<<<<<
@@ -2281,7 +2353,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI___in
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":59
+/* "motorcontrollib/Motors.pyx":60
  * 
  * 
  *     def motor(self, float steps, float additionalWaitTime=0):             # <<<<<<<<<<<<<<
@@ -2328,7 +2400,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_3mot
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_steps)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("motor", 0, 2, 3, 1); __PYX_ERR(0, 59, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("motor", 0, 2, 3, 1); __PYX_ERR(0, 60, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -2338,7 +2410,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_3mot
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "motor") < 0)) __PYX_ERR(0, 59, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "motor") < 0)) __PYX_ERR(0, 60, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2351,16 +2423,16 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_3mot
       }
     }
     __pyx_v_self = values[0];
-    __pyx_v_steps = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_steps == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_steps = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_steps == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
     if (values[2]) {
-      __pyx_v_additionalWaitTime = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_additionalWaitTime == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+      __pyx_v_additionalWaitTime = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_additionalWaitTime == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
     } else {
       __pyx_v_additionalWaitTime = ((float)((float)0.0));
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("motor", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 59, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("motor", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 60, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.motor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2404,14 +2476,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("motor", 0);
 
-  /* "motorcontrollib/Motors.pyx":69
+  /* "motorcontrollib/Motors.pyx":70
  *         cdef int stepCount, stepDir, x, stepCounter, n
  * 
  *         sequence = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = PyList_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
@@ -2425,7 +2497,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
   PyList_SET_ITEM(__pyx_t_1, 3, __pyx_int_1);
-  __pyx_t_2 = PyList_New(4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
@@ -2439,7 +2511,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
   PyList_SET_ITEM(__pyx_t_2, 3, __pyx_int_0);
-  __pyx_t_3 = PyList_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
@@ -2453,7 +2525,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
   PyList_SET_ITEM(__pyx_t_3, 3, __pyx_int_0);
-  __pyx_t_4 = PyList_New(4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -2467,7 +2539,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
   PyList_SET_ITEM(__pyx_t_4, 3, __pyx_int_0);
-  __pyx_t_5 = PyList_New(4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_5 = PyList_New(4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -2481,7 +2553,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
   PyList_SET_ITEM(__pyx_t_5, 3, __pyx_int_0);
-  __pyx_t_6 = PyList_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -2495,7 +2567,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
   PyList_SET_ITEM(__pyx_t_6, 3, __pyx_int_0);
-  __pyx_t_7 = PyList_New(4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_7 = PyList_New(4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -2509,7 +2581,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
   PyList_SET_ITEM(__pyx_t_7, 3, __pyx_int_1);
-  __pyx_t_8 = PyList_New(4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_8 = PyList_New(4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -2523,7 +2595,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
   PyList_SET_ITEM(__pyx_t_8, 3, __pyx_int_1);
-  __pyx_t_9 = PyList_New(8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_9 = PyList_New(8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_1);
   PyList_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -2552,7 +2624,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __pyx_v_sequence = ((PyObject*)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "motorcontrollib/Motors.pyx":72
+  /* "motorcontrollib/Motors.pyx":73
  * 
  * 
  *         stepCount = 8             # <<<<<<<<<<<<<<
@@ -2561,7 +2633,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
   __pyx_v_stepCount = 8;
 
-  /* "motorcontrollib/Motors.pyx":73
+  /* "motorcontrollib/Motors.pyx":74
  * 
  *         stepCount = 8
  *         if steps<0:             # <<<<<<<<<<<<<<
@@ -2571,7 +2643,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __pyx_t_10 = ((__pyx_v_steps < 0.0) != 0);
   if (__pyx_t_10) {
 
-    /* "motorcontrollib/Motors.pyx":74
+    /* "motorcontrollib/Motors.pyx":75
  *         stepCount = 8
  *         if steps<0:
  *             stepDir=-1             # <<<<<<<<<<<<<<
@@ -2580,7 +2652,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
     __pyx_v_stepDir = -1;
 
-    /* "motorcontrollib/Motors.pyx":73
+    /* "motorcontrollib/Motors.pyx":74
  * 
  *         stepCount = 8
  *         if steps<0:             # <<<<<<<<<<<<<<
@@ -2590,7 +2662,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
     goto __pyx_L3;
   }
 
-  /* "motorcontrollib/Motors.pyx":76
+  /* "motorcontrollib/Motors.pyx":77
  *             stepDir=-1
  *         else:
  *             stepDir=1             # <<<<<<<<<<<<<<
@@ -2602,23 +2674,23 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   }
   __pyx_L3:;
 
-  /* "motorcontrollib/Motors.pyx":78
+  /* "motorcontrollib/Motors.pyx":79
  *             stepDir=1
  * 
  *         x=round(steps)             # <<<<<<<<<<<<<<
  *         if x<=0:
  *             x=-x#must always be positive
  */
-  __pyx_t_9 = PyFloat_FromDouble(__pyx_v_steps); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_9 = PyFloat_FromDouble(__pyx_v_steps); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_builtin_round, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_builtin_round, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_v_x = __pyx_t_11;
 
-  /* "motorcontrollib/Motors.pyx":79
+  /* "motorcontrollib/Motors.pyx":80
  * 
  *         x=round(steps)
  *         if x<=0:             # <<<<<<<<<<<<<<
@@ -2628,7 +2700,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   __pyx_t_10 = ((__pyx_v_x <= 0) != 0);
   if (__pyx_t_10) {
 
-    /* "motorcontrollib/Motors.pyx":80
+    /* "motorcontrollib/Motors.pyx":81
  *         x=round(steps)
  *         if x<=0:
  *             x=-x#must always be positive             # <<<<<<<<<<<<<<
@@ -2637,7 +2709,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
     __pyx_v_x = (-__pyx_v_x);
 
-    /* "motorcontrollib/Motors.pyx":79
+    /* "motorcontrollib/Motors.pyx":80
  * 
  *         x=round(steps)
  *         if x<=0:             # <<<<<<<<<<<<<<
@@ -2646,7 +2718,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":82
+  /* "motorcontrollib/Motors.pyx":83
  *             x=-x#must always be positive
  * 
  *         stepCounter = 0             # <<<<<<<<<<<<<<
@@ -2655,7 +2727,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
   __pyx_v_stepCounter = 0;
 
-  /* "motorcontrollib/Motors.pyx":83
+  /* "motorcontrollib/Motors.pyx":84
  * 
  *         stepCounter = 0
  *         for i in range(0,x):             # <<<<<<<<<<<<<<
@@ -2667,7 +2739,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
     __pyx_v_i = __pyx_t_13;
 
-    /* "motorcontrollib/Motors.pyx":84
+    /* "motorcontrollib/Motors.pyx":85
  *         stepCounter = 0
  *         for i in range(0,x):
  *             for n in range(0,4):             # <<<<<<<<<<<<<<
@@ -2677,50 +2749,50 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
     for (__pyx_t_14 = 0; __pyx_t_14 < 4; __pyx_t_14+=1) {
       __pyx_v_n = __pyx_t_14;
 
-      /* "motorcontrollib/Motors.pyx":85
+      /* "motorcontrollib/Motors.pyx":86
  *         for i in range(0,x):
  *             for n in range(0,4):
  *                 currentPin = self.stepPins[n]             # <<<<<<<<<<<<<<
  *                 if sequence[stepCounter][n]==1:
  *                     GPIO.output(currentPin,True)
  */
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_stepPins); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_stepPins); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 86, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_8, __pyx_v_n, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_8, __pyx_v_n, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 86, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_XDECREF_SET(__pyx_v_currentPin, __pyx_t_9);
       __pyx_t_9 = 0;
 
-      /* "motorcontrollib/Motors.pyx":86
+      /* "motorcontrollib/Motors.pyx":87
  *             for n in range(0,4):
  *                 currentPin = self.stepPins[n]
  *                 if sequence[stepCounter][n]==1:             # <<<<<<<<<<<<<<
  *                     GPIO.output(currentPin,True)
  *                 else:#see if this is redundant
  */
-      __pyx_t_9 = __Pyx_GetItemInt_List(__pyx_v_sequence, __pyx_v_stepCounter, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_GetItemInt_List(__pyx_v_sequence, __pyx_v_stepCounter, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_9, __pyx_v_n, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_9, __pyx_v_n, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __pyx_t_9 = __Pyx_PyInt_EqObjC(__pyx_t_8, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_EqObjC(__pyx_t_8, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       if (__pyx_t_10) {
 
-        /* "motorcontrollib/Motors.pyx":87
+        /* "motorcontrollib/Motors.pyx":88
  *                 currentPin = self.stepPins[n]
  *                 if sequence[stepCounter][n]==1:
  *                     GPIO.output(currentPin,True)             # <<<<<<<<<<<<<<
  *                 else:#see if this is redundant
  *                     GPIO.output(currentPin,False)
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 87, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 88, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_output); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 87, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_output); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 88, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __pyx_t_8 = NULL;
@@ -2738,7 +2810,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_7)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_currentPin, Py_True};
-          __pyx_t_9 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_9);
         } else
@@ -2746,13 +2818,13 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_currentPin, Py_True};
-          __pyx_t_9 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_9);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 87, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 88, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_8) {
             __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -2763,14 +2835,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
           __Pyx_INCREF(Py_True);
           __Pyx_GIVEREF(Py_True);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_15, Py_True);
-          __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_6, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_6, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-        /* "motorcontrollib/Motors.pyx":86
+        /* "motorcontrollib/Motors.pyx":87
  *             for n in range(0,4):
  *                 currentPin = self.stepPins[n]
  *                 if sequence[stepCounter][n]==1:             # <<<<<<<<<<<<<<
@@ -2780,7 +2852,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
         goto __pyx_L9;
       }
 
-      /* "motorcontrollib/Motors.pyx":89
+      /* "motorcontrollib/Motors.pyx":90
  *                     GPIO.output(currentPin,True)
  *                 else:#see if this is redundant
  *                     GPIO.output(currentPin,False)             # <<<<<<<<<<<<<<
@@ -2788,9 +2860,9 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  *             stepCounter += stepDir
  */
       /*else*/ {
-        __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 89, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_GPIO); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 90, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_output); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 89, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_output); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 90, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __pyx_t_7 = NULL;
@@ -2808,7 +2880,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_6)) {
           PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_currentPin, Py_False};
-          __pyx_t_9 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 90, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_9);
         } else
@@ -2816,13 +2888,13 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
           PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_v_currentPin, Py_False};
-          __pyx_t_9 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_15, 2+__pyx_t_15); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 90, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_9);
         } else
         #endif
         {
-          __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 89, __pyx_L1_error)
+          __pyx_t_8 = PyTuple_New(2+__pyx_t_15); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 90, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           if (__pyx_t_7) {
             __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -2833,7 +2905,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
           __Pyx_INCREF(Py_False);
           __Pyx_GIVEREF(Py_False);
           PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_15, Py_False);
-          __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_8, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_8, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 90, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         }
@@ -2843,7 +2915,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
       __pyx_L9:;
     }
 
-    /* "motorcontrollib/Motors.pyx":91
+    /* "motorcontrollib/Motors.pyx":92
  *                     GPIO.output(currentPin,False)
  * 
  *             stepCounter += stepDir             # <<<<<<<<<<<<<<
@@ -2852,7 +2924,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
     __pyx_v_stepCounter = (__pyx_v_stepCounter + __pyx_v_stepDir);
 
-    /* "motorcontrollib/Motors.pyx":94
+    /* "motorcontrollib/Motors.pyx":95
  *           # If we reach the end of the sequence
  *           # start again
  *             if (stepCounter==stepCount):             # <<<<<<<<<<<<<<
@@ -2862,7 +2934,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
     __pyx_t_10 = ((__pyx_v_stepCounter == __pyx_v_stepCount) != 0);
     if (__pyx_t_10) {
 
-      /* "motorcontrollib/Motors.pyx":95
+      /* "motorcontrollib/Motors.pyx":96
  *           # start again
  *             if (stepCounter==stepCount):
  *                 stepCounter = 0             # <<<<<<<<<<<<<<
@@ -2871,7 +2943,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
       __pyx_v_stepCounter = 0;
 
-      /* "motorcontrollib/Motors.pyx":94
+      /* "motorcontrollib/Motors.pyx":95
  *           # If we reach the end of the sequence
  *           # start again
  *             if (stepCounter==stepCount):             # <<<<<<<<<<<<<<
@@ -2880,7 +2952,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
     }
 
-    /* "motorcontrollib/Motors.pyx":97
+    /* "motorcontrollib/Motors.pyx":98
  *                 stepCounter = 0
  * 
  *             if (stepCounter<0):             # <<<<<<<<<<<<<<
@@ -2890,7 +2962,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
     __pyx_t_10 = ((__pyx_v_stepCounter < 0) != 0);
     if (__pyx_t_10) {
 
-      /* "motorcontrollib/Motors.pyx":98
+      /* "motorcontrollib/Motors.pyx":99
  * 
  *             if (stepCounter<0):
  *                 stepCounter = 7             # <<<<<<<<<<<<<<
@@ -2899,7 +2971,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
       __pyx_v_stepCounter = 7;
 
-      /* "motorcontrollib/Motors.pyx":97
+      /* "motorcontrollib/Motors.pyx":98
  *                 stepCounter = 0
  * 
  *             if (stepCounter<0):             # <<<<<<<<<<<<<<
@@ -2908,23 +2980,23 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
  */
     }
 
-    /* "motorcontrollib/Motors.pyx":100
+    /* "motorcontrollib/Motors.pyx":101
  *                 stepCounter = 7
  *           # Wait before moving on
  *             t.sleep(self.minWaitTime+additionalWaitTime)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_t); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_t); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sleep); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sleep); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_minWaitTime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_minWaitTime); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_additionalWaitTime); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_additionalWaitTime); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_5 = PyNumber_Add(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_5 = PyNumber_Add(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -2941,13 +3013,13 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
     __pyx_t_9 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_7, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_5);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 100, __pyx_L1_error)
+    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
 
-  /* "motorcontrollib/Motors.pyx":59
+  /* "motorcontrollib/Motors.pyx":60
  * 
  * 
  *     def motor(self, float steps, float additionalWaitTime=0):             # <<<<<<<<<<<<<<
@@ -2978,7 +3050,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_2mot
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":103
+/* "motorcontrollib/Motors.pyx":104
  * 
  * 
  *     def runDisplacement(self,degrees):             # <<<<<<<<<<<<<<
@@ -3022,11 +3094,11 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_5run
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_degrees)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, 1); __PYX_ERR(0, 103, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, 1); __PYX_ERR(0, 104, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runDisplacement") < 0)) __PYX_ERR(0, 103, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runDisplacement") < 0)) __PYX_ERR(0, 104, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3039,7 +3111,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_5run
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 103, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 104, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.runDisplacement", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3064,14 +3136,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_4run
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runDisplacement", 0);
 
-  /* "motorcontrollib/Motors.pyx":108
+  /* "motorcontrollib/Motors.pyx":109
  *             distance:The angle to travel
  *         """
  *         steps=self.convertDegrees(degrees)             # <<<<<<<<<<<<<<
  *         #print(steps)
  *         self.motor(steps)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3085,20 +3157,20 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_4run
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_degrees) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_degrees);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_steps = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":110
+  /* "motorcontrollib/Motors.pyx":111
  *         steps=self.convertDegrees(degrees)
  *         #print(steps)
  *         self.motor(steps)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motor); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motor); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3112,12 +3184,12 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_4run
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_steps) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_steps);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":103
+  /* "motorcontrollib/Motors.pyx":104
  * 
  * 
  *     def runDisplacement(self,degrees):             # <<<<<<<<<<<<<<
@@ -3141,7 +3213,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_4run
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":113
+/* "motorcontrollib/Motors.pyx":114
  * 
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
@@ -3188,17 +3260,17 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_7run
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_degreesPs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 1); __PYX_ERR(0, 113, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 1); __PYX_ERR(0, 114, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_distance)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 2); __PYX_ERR(0, 113, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 2); __PYX_ERR(0, 114, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityD") < 0)) __PYX_ERR(0, 113, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityD") < 0)) __PYX_ERR(0, 114, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -3213,7 +3285,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_7run
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 113, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 114, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.runVelocityD", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3245,44 +3317,44 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runVelocityD", 0);
 
-  /* "motorcontrollib/Motors.pyx":119
+  /* "motorcontrollib/Motors.pyx":120
  *             distance:The distance to run for
  *         """
  *         if degreesPs==0 or distance==0:             # <<<<<<<<<<<<<<
  *             raise ValueError('No zero values aloud')
  *         if degreesPs>self.maxSpeed:
  */
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_degreesPs, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_degreesPs, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_3) {
   } else {
     __pyx_t_1 = __pyx_t_3;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_distance, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_distance, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "motorcontrollib/Motors.pyx":120
+    /* "motorcontrollib/Motors.pyx":121
  *         """
  *         if degreesPs==0 or distance==0:
  *             raise ValueError('No zero values aloud')             # <<<<<<<<<<<<<<
  *         if degreesPs>self.maxSpeed:
  *             raise ValueError('Velocity to high')
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 120, __pyx_L1_error)
+    __PYX_ERR(0, 121, __pyx_L1_error)
 
-    /* "motorcontrollib/Motors.pyx":119
+    /* "motorcontrollib/Motors.pyx":120
  *             distance:The distance to run for
  *         """
  *         if degreesPs==0 or distance==0:             # <<<<<<<<<<<<<<
@@ -3291,35 +3363,35 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":121
+  /* "motorcontrollib/Motors.pyx":122
  *         if degreesPs==0 or distance==0:
  *             raise ValueError('No zero values aloud')
  *         if degreesPs>self.maxSpeed:             # <<<<<<<<<<<<<<
  *             raise ValueError('Velocity to high')
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_degreesPs, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_degreesPs, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (unlikely(__pyx_t_1)) {
 
-    /* "motorcontrollib/Motors.pyx":122
+    /* "motorcontrollib/Motors.pyx":123
  *             raise ValueError('No zero values aloud')
  *         if degreesPs>self.maxSpeed:
  *             raise ValueError('Velocity to high')             # <<<<<<<<<<<<<<
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         neededTime=distance/degreesPs#calculates the required time to run
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 122, __pyx_L1_error)
+    __PYX_ERR(0, 123, __pyx_L1_error)
 
-    /* "motorcontrollib/Motors.pyx":121
+    /* "motorcontrollib/Motors.pyx":122
  *         if degreesPs==0 or distance==0:
  *             raise ValueError('No zero values aloud')
  *         if degreesPs>self.maxSpeed:             # <<<<<<<<<<<<<<
@@ -3328,43 +3400,43 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":123
+  /* "motorcontrollib/Motors.pyx":124
  *         if degreesPs>self.maxSpeed:
  *             raise ValueError('Velocity to high')
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation             # <<<<<<<<<<<<<<
  *         neededTime=distance/degreesPs#calculates the required time to run
  *         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_minTime = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "motorcontrollib/Motors.pyx":124
+  /* "motorcontrollib/Motors.pyx":125
  *             raise ValueError('Velocity to high')
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         neededTime=distance/degreesPs#calculates the required time to run             # <<<<<<<<<<<<<<
  *         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:
  */
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_v_degreesPs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_v_degreesPs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_neededTime = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "motorcontrollib/Motors.pyx":125
+  /* "motorcontrollib/Motors.pyx":126
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         neededTime=distance/degreesPs#calculates the required time to run
  *         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times             # <<<<<<<<<<<<<<
  *         if additionalWaitTime<0:
  *             additionalWaitTime=-additionalWaitTime
  */
-  __pyx_t_2 = PyNumber_Subtract(__pyx_v_neededTime, __pyx_v_minTime); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_neededTime, __pyx_v_minTime); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -3378,41 +3450,41 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
   }
   __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_v_distance) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_distance);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_additionalWaitTime = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "motorcontrollib/Motors.pyx":126
+  /* "motorcontrollib/Motors.pyx":127
  *         neededTime=distance/degreesPs#calculates the required time to run
  *         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:             # <<<<<<<<<<<<<<
  *             additionalWaitTime=-additionalWaitTime
  *         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor
  */
-  __pyx_t_5 = PyObject_RichCompare(__pyx_v_additionalWaitTime, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_v_additionalWaitTime, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (__pyx_t_1) {
 
-    /* "motorcontrollib/Motors.pyx":127
+    /* "motorcontrollib/Motors.pyx":128
  *         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:
  *             additionalWaitTime=-additionalWaitTime             # <<<<<<<<<<<<<<
  *         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor
  * 
  */
-    __pyx_t_5 = PyNumber_Negative(__pyx_v_additionalWaitTime); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
+    __pyx_t_5 = PyNumber_Negative(__pyx_v_additionalWaitTime); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF_SET(__pyx_v_additionalWaitTime, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "motorcontrollib/Motors.pyx":126
+    /* "motorcontrollib/Motors.pyx":127
  *         neededTime=distance/degreesPs#calculates the required time to run
  *         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:             # <<<<<<<<<<<<<<
@@ -3421,16 +3493,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":128
+  /* "motorcontrollib/Motors.pyx":129
  *         if additionalWaitTime<0:
  *             additionalWaitTime=-additionalWaitTime
  *         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motor); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motor); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -3444,7 +3516,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
   }
   __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_v_distance) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_distance);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -3462,7 +3534,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_2, __pyx_v_additionalWaitTime};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3471,14 +3543,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_2, __pyx_v_additionalWaitTime};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -3489,14 +3561,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
     __Pyx_GIVEREF(__pyx_v_additionalWaitTime);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_8, __pyx_v_additionalWaitTime);
     __pyx_t_2 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "motorcontrollib/Motors.pyx":113
+  /* "motorcontrollib/Motors.pyx":114
  * 
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
@@ -3524,7 +3596,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_6run
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":131
+/* "motorcontrollib/Motors.pyx":132
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):#useful for time limited running in main program             # <<<<<<<<<<<<<<
@@ -3571,17 +3643,17 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_9run
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_degreesPs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 1); __PYX_ERR(0, 131, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 1); __PYX_ERR(0, 132, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_time)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 2); __PYX_ERR(0, 131, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 2); __PYX_ERR(0, 132, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityT") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityT") < 0)) __PYX_ERR(0, 132, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -3596,7 +3668,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_9run
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 132, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.runVelocityT", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3628,44 +3700,44 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runVelocityT", 0);
 
-  /* "motorcontrollib/Motors.pyx":142
+  /* "motorcontrollib/Motors.pyx":143
  *         #print(degreesPs)
  * 
  *         if degreesPs==0 or time==0:             # <<<<<<<<<<<<<<
  *             raise ValueError('No zero values aloud')
  *         if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:
  */
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_degreesPs, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_degreesPs, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_3) {
   } else {
     __pyx_t_1 = __pyx_t_3;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_time, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_time, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "motorcontrollib/Motors.pyx":143
+    /* "motorcontrollib/Motors.pyx":144
  * 
  *         if degreesPs==0 or time==0:
  *             raise ValueError('No zero values aloud')             # <<<<<<<<<<<<<<
  *         if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:
  *             raise ValueError('Velocity to high')
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 143, __pyx_L1_error)
+    __PYX_ERR(0, 144, __pyx_L1_error)
 
-    /* "motorcontrollib/Motors.pyx":142
+    /* "motorcontrollib/Motors.pyx":143
  *         #print(degreesPs)
  * 
  *         if degreesPs==0 or time==0:             # <<<<<<<<<<<<<<
@@ -3674,51 +3746,51 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":144
+  /* "motorcontrollib/Motors.pyx":145
  *         if degreesPs==0 or time==0:
  *             raise ValueError('No zero values aloud')
  *         if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:             # <<<<<<<<<<<<<<
  *             raise ValueError('Velocity to high')
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_degreesPs, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_degreesPs, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (!__pyx_t_3) {
   } else {
     __pyx_t_1 = __pyx_t_3;
     goto __pyx_L7_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = PyNumber_Negative(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Negative(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_degreesPs, __pyx_t_2, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_degreesPs, __pyx_t_2, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_1 = __pyx_t_3;
   __pyx_L7_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "motorcontrollib/Motors.pyx":145
+    /* "motorcontrollib/Motors.pyx":146
  *             raise ValueError('No zero values aloud')
  *         if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:
  *             raise ValueError('Velocity to high')             # <<<<<<<<<<<<<<
  * 
  *         distance=degreesPs*time#calculates the distance
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 145, __pyx_L1_error)
+    __PYX_ERR(0, 146, __pyx_L1_error)
 
-    /* "motorcontrollib/Motors.pyx":144
+    /* "motorcontrollib/Motors.pyx":145
  *         if degreesPs==0 or time==0:
  *             raise ValueError('No zero values aloud')
  *         if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:             # <<<<<<<<<<<<<<
@@ -3727,43 +3799,43 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":147
+  /* "motorcontrollib/Motors.pyx":148
  *             raise ValueError('Velocity to high')
  * 
  *         distance=degreesPs*time#calculates the distance             # <<<<<<<<<<<<<<
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  */
-  __pyx_t_4 = PyNumber_Multiply(__pyx_v_degreesPs, __pyx_v_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_v_degreesPs, __pyx_v_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_v_distance = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":148
+  /* "motorcontrollib/Motors.pyx":149
  * 
  *         distance=degreesPs*time#calculates the distance
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation             # <<<<<<<<<<<<<<
  *         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_minTime = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "motorcontrollib/Motors.pyx":149
+  /* "motorcontrollib/Motors.pyx":150
  *         distance=degreesPs*time#calculates the distance
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times             # <<<<<<<<<<<<<<
  *         if additionalWaitTime<0:
  *             additionalWaitTime=-additionalWaitTime
  */
-  __pyx_t_2 = PyNumber_Subtract(__pyx_v_time, __pyx_v_minTime); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_time, __pyx_v_minTime); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -3777,41 +3849,41 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
   }
   __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_v_distance) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_distance);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_additionalWaitTime = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "motorcontrollib/Motors.pyx":150
+  /* "motorcontrollib/Motors.pyx":151
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:             # <<<<<<<<<<<<<<
  *             additionalWaitTime=-additionalWaitTime
  *         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor
  */
-  __pyx_t_5 = PyObject_RichCompare(__pyx_v_additionalWaitTime, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_v_additionalWaitTime, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (__pyx_t_1) {
 
-    /* "motorcontrollib/Motors.pyx":151
+    /* "motorcontrollib/Motors.pyx":152
  *         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:
  *             additionalWaitTime=-additionalWaitTime             # <<<<<<<<<<<<<<
  *         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor
  * 
  */
-    __pyx_t_5 = PyNumber_Negative(__pyx_v_additionalWaitTime); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_5 = PyNumber_Negative(__pyx_v_additionalWaitTime); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 152, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF_SET(__pyx_v_additionalWaitTime, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "motorcontrollib/Motors.pyx":150
+    /* "motorcontrollib/Motors.pyx":151
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
  *         if additionalWaitTime<0:             # <<<<<<<<<<<<<<
@@ -3820,16 +3892,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
  */
   }
 
-  /* "motorcontrollib/Motors.pyx":152
+  /* "motorcontrollib/Motors.pyx":153
  *         if additionalWaitTime<0:
  *             additionalWaitTime=-additionalWaitTime
  *         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motor); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motor); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_convertDegrees); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -3843,7 +3915,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
   }
   __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_v_distance) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_distance);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 152, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -3861,7 +3933,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_2, __pyx_v_additionalWaitTime};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 153, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3870,14 +3942,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_2, __pyx_v_additionalWaitTime};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 153, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 153, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -3888,14 +3960,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
     __Pyx_GIVEREF(__pyx_v_additionalWaitTime);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_8, __pyx_v_additionalWaitTime);
     __pyx_t_2 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 153, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "motorcontrollib/Motors.pyx":131
+  /* "motorcontrollib/Motors.pyx":132
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):#useful for time limited running in main program             # <<<<<<<<<<<<<<
@@ -3923,7 +3995,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_8run
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":156
+/* "motorcontrollib/Motors.pyx":157
  * 
  * 
  *     def convertDegrees(self,float degrees):             # <<<<<<<<<<<<<<
@@ -3967,11 +4039,11 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_11co
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_degrees)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convertDegrees", 1, 2, 2, 1); __PYX_ERR(0, 156, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convertDegrees", 1, 2, 2, 1); __PYX_ERR(0, 157, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "convertDegrees") < 0)) __PYX_ERR(0, 156, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "convertDegrees") < 0)) __PYX_ERR(0, 157, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3980,11 +4052,11 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_11co
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_self = values[0];
-    __pyx_v_degrees = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_degrees == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L3_error)
+    __pyx_v_degrees = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_degrees == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("convertDegrees", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 156, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("convertDegrees", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 157, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.convertDegrees", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4008,7 +4080,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_10co
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("convertDegrees", 0);
 
-  /* "motorcontrollib/Motors.pyx":158
+  /* "motorcontrollib/Motors.pyx":159
  *     def convertDegrees(self,float degrees):
  *         '''convers degrees to steps for internal use within the function'''
  *         return degrees/self.motorDetails['baseAngle']             # <<<<<<<<<<<<<<
@@ -4016,14 +4088,14 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_10co
  *     def setMinWaitTime(self,minWaitTime):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_degrees); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_degrees); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motorDetails); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_motorDetails); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_t_2, __pyx_n_s_baseAngle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_t_2, __pyx_n_s_baseAngle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4031,7 +4103,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_10co
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "motorcontrollib/Motors.pyx":156
+  /* "motorcontrollib/Motors.pyx":157
  * 
  * 
  *     def convertDegrees(self,float degrees):             # <<<<<<<<<<<<<<
@@ -4052,7 +4124,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_10co
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":160
+/* "motorcontrollib/Motors.pyx":161
  *         return degrees/self.motorDetails['baseAngle']
  * 
  *     def setMinWaitTime(self,minWaitTime):             # <<<<<<<<<<<<<<
@@ -4095,11 +4167,11 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_13se
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_minWaitTime)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setMinWaitTime", 1, 2, 2, 1); __PYX_ERR(0, 160, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setMinWaitTime", 1, 2, 2, 1); __PYX_ERR(0, 161, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setMinWaitTime") < 0)) __PYX_ERR(0, 160, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setMinWaitTime") < 0)) __PYX_ERR(0, 161, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4112,7 +4184,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_13se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("setMinWaitTime", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 160, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("setMinWaitTime", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 161, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.setMinWaitTime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4133,16 +4205,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_12se
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("setMinWaitTime", 0);
 
-  /* "motorcontrollib/Motors.pyx":161
+  /* "motorcontrollib/Motors.pyx":162
  * 
  *     def setMinWaitTime(self,minWaitTime):
  *         self.minWaitTime=minWaitTime             # <<<<<<<<<<<<<<
  * 
  *     def setMaxSpeed(self,maxSpeed):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_minWaitTime, __pyx_v_minWaitTime) < 0) __PYX_ERR(0, 161, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_minWaitTime, __pyx_v_minWaitTime) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":160
+  /* "motorcontrollib/Motors.pyx":161
  *         return degrees/self.motorDetails['baseAngle']
  * 
  *     def setMinWaitTime(self,minWaitTime):             # <<<<<<<<<<<<<<
@@ -4162,7 +4234,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_12se
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":163
+/* "motorcontrollib/Motors.pyx":164
  *         self.minWaitTime=minWaitTime
  * 
  *     def setMaxSpeed(self,maxSpeed):             # <<<<<<<<<<<<<<
@@ -4205,11 +4277,11 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_15se
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_maxSpeed)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setMaxSpeed", 1, 2, 2, 1); __PYX_ERR(0, 163, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setMaxSpeed", 1, 2, 2, 1); __PYX_ERR(0, 164, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setMaxSpeed") < 0)) __PYX_ERR(0, 163, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setMaxSpeed") < 0)) __PYX_ERR(0, 164, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4222,7 +4294,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_15se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("setMaxSpeed", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 163, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("setMaxSpeed", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 164, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_28BJY48_ULN2003_RPI.setMaxSpeed", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4243,16 +4315,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_14se
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("setMaxSpeed", 0);
 
-  /* "motorcontrollib/Motors.pyx":164
+  /* "motorcontrollib/Motors.pyx":165
  * 
  *     def setMaxSpeed(self,maxSpeed):
  *         self.maxSpeed=maxSpeed             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed, __pyx_v_maxSpeed) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed, __pyx_v_maxSpeed) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":163
+  /* "motorcontrollib/Motors.pyx":164
  *         self.minWaitTime=minWaitTime
  * 
  *     def setMaxSpeed(self,maxSpeed):             # <<<<<<<<<<<<<<
@@ -4272,7 +4344,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_14se
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":171
+/* "motorcontrollib/Motors.pyx":172
  *     maxSpeed=48
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -4306,7 +4378,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual___init__(CYTHON_U
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":175
+/* "motorcontrollib/Motors.pyx":176
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):             # <<<<<<<<<<<<<<
@@ -4353,17 +4425,17 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_9M_Virtual_3runVelocityT(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_degreesPs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 1); __PYX_ERR(0, 175, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 1); __PYX_ERR(0, 176, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_time)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 2); __PYX_ERR(0, 175, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, 2); __PYX_ERR(0, 176, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityT") < 0)) __PYX_ERR(0, 175, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityT") < 0)) __PYX_ERR(0, 176, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -4378,7 +4450,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_9M_Virtual_3runVelocityT(PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 175, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runVelocityT", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 176, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_Virtual.runVelocityT", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4405,16 +4477,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runVelocityT", 0);
 
-  /* "motorcontrollib/Motors.pyx":181
+  /* "motorcontrollib/Motors.pyx":182
  *             time:The run time
  *         """
  *         t1=t.time()             # <<<<<<<<<<<<<<
  *         print('distance: ',degreesPs*time)
  *         print('time: ',time)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 181, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4429,22 +4501,22 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_t1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":182
+  /* "motorcontrollib/Motors.pyx":183
  *         """
  *         t1=t.time()
  *         print('distance: ',degreesPs*time)             # <<<<<<<<<<<<<<
  *         print('time: ',time)
  *         print('Velocity: ',degreesPs)
  */
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_degreesPs, __pyx_v_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_v_degreesPs, __pyx_v_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_kp_s_distance_2);
   __Pyx_GIVEREF(__pyx_kp_s_distance_2);
@@ -4452,17 +4524,17 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 182, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":183
+  /* "motorcontrollib/Motors.pyx":184
  *         t1=t.time()
  *         print('distance: ',degreesPs*time)
  *         print('time: ',time)             # <<<<<<<<<<<<<<
  *         print('Velocity: ',degreesPs)
  *         t2=t.time()
  */
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_kp_s_time_2);
   __Pyx_GIVEREF(__pyx_kp_s_time_2);
@@ -4470,17 +4542,17 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   __Pyx_INCREF(__pyx_v_time);
   __Pyx_GIVEREF(__pyx_v_time);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_time);
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 183, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":184
+  /* "motorcontrollib/Motors.pyx":185
  *         print('distance: ',degreesPs*time)
  *         print('time: ',time)
  *         print('Velocity: ',degreesPs)             # <<<<<<<<<<<<<<
  *         t2=t.time()
  *         t.sleep(time-(t2-t1))
  */
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_kp_s_Velocity);
   __Pyx_GIVEREF(__pyx_kp_s_Velocity);
@@ -4488,19 +4560,19 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   __Pyx_INCREF(__pyx_v_degreesPs);
   __Pyx_GIVEREF(__pyx_v_degreesPs);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_degreesPs);
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 184, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":185
+  /* "motorcontrollib/Motors.pyx":186
  *         print('time: ',time)
  *         print('Velocity: ',degreesPs)
  *         t2=t.time()             # <<<<<<<<<<<<<<
  *         t.sleep(time-(t2-t1))
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -4515,27 +4587,27 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   }
   __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_t2 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":186
+  /* "motorcontrollib/Motors.pyx":187
  *         print('Velocity: ',degreesPs)
  *         t2=t.time()
  *         t.sleep(time-(t2-t1))             # <<<<<<<<<<<<<<
  * 
  *     def runVelocityD(self,degreesPs,distance):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sleep); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sleep); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Subtract(__pyx_v_t2, __pyx_v_t1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_t2, __pyx_v_t1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyNumber_Subtract(__pyx_v_time, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Subtract(__pyx_v_time, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4551,12 +4623,12 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 186, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":175
+  /* "motorcontrollib/Motors.pyx":176
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):             # <<<<<<<<<<<<<<
@@ -4582,7 +4654,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_2runVelocityT(CYT
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":188
+/* "motorcontrollib/Motors.pyx":189
  *         t.sleep(time-(t2-t1))
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
@@ -4629,17 +4701,17 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_9M_Virtual_5runVelocityD(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_degreesPs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 1); __PYX_ERR(0, 188, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 1); __PYX_ERR(0, 189, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_distance)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 2); __PYX_ERR(0, 188, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, 2); __PYX_ERR(0, 189, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityD") < 0)) __PYX_ERR(0, 188, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runVelocityD") < 0)) __PYX_ERR(0, 189, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -4654,7 +4726,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_9M_Virtual_5runVelocityD(PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 188, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runVelocityD", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 189, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_Virtual.runVelocityD", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4682,16 +4754,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runVelocityD", 0);
 
-  /* "motorcontrollib/Motors.pyx":194
+  /* "motorcontrollib/Motors.pyx":195
  *             distance:The distance to run for
  *         """
  *         t1=t.time()             # <<<<<<<<<<<<<<
  *         print('distance: ',distance)
  *         print('time: ',distance/degreesPs)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4706,20 +4778,20 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_t1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":195
+  /* "motorcontrollib/Motors.pyx":196
  *         """
  *         t1=t.time()
  *         print('distance: ',distance)             # <<<<<<<<<<<<<<
  *         print('time: ',distance/degreesPs)
  *         print('Velocity: ',degreesPs)
  */
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_s_distance_2);
   __Pyx_GIVEREF(__pyx_kp_s_distance_2);
@@ -4727,19 +4799,19 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   __Pyx_INCREF(__pyx_v_distance);
   __Pyx_GIVEREF(__pyx_v_distance);
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_distance);
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":196
+  /* "motorcontrollib/Motors.pyx":197
  *         t1=t.time()
  *         print('distance: ',distance)
  *         print('time: ',distance/degreesPs)             # <<<<<<<<<<<<<<
  *         print('Velocity: ',degreesPs)
  *         t2=t.time()
  */
-  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_v_degreesPs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_v_degreesPs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_kp_s_time_2);
   __Pyx_GIVEREF(__pyx_kp_s_time_2);
@@ -4747,17 +4819,17 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":197
+  /* "motorcontrollib/Motors.pyx":198
  *         print('distance: ',distance)
  *         print('time: ',distance/degreesPs)
  *         print('Velocity: ',degreesPs)             # <<<<<<<<<<<<<<
  *         t2=t.time()
  *         t.sleep((distance/degreesPs)-(t2-t1))
  */
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_kp_s_Velocity);
   __Pyx_GIVEREF(__pyx_kp_s_Velocity);
@@ -4765,19 +4837,19 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   __Pyx_INCREF(__pyx_v_degreesPs);
   __Pyx_GIVEREF(__pyx_v_degreesPs);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_degreesPs);
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":198
+  /* "motorcontrollib/Motors.pyx":199
  *         print('time: ',distance/degreesPs)
  *         print('Velocity: ',degreesPs)
  *         t2=t.time()             # <<<<<<<<<<<<<<
  *         t.sleep((distance/degreesPs)-(t2-t1))
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -4792,29 +4864,29 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   }
   __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_t2 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":199
+  /* "motorcontrollib/Motors.pyx":200
  *         print('Velocity: ',degreesPs)
  *         t2=t.time()
  *         t.sleep((distance/degreesPs)-(t2-t1))             # <<<<<<<<<<<<<<
  * 
  *     def runDisplacement(self,distance):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sleep); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sleep); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_v_degreesPs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_v_degreesPs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyNumber_Subtract(__pyx_v_t2, __pyx_v_t1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Subtract(__pyx_v_t2, __pyx_v_t1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyNumber_Subtract(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Subtract(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4831,12 +4903,12 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":188
+  /* "motorcontrollib/Motors.pyx":189
  *         t.sleep(time-(t2-t1))
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
@@ -4863,7 +4935,7 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_4runVelocityD(CYT
   return __pyx_r;
 }
 
-/* "motorcontrollib/Motors.pyx":201
+/* "motorcontrollib/Motors.pyx":202
  *         t.sleep((distance/degreesPs)-(t2-t1))
  * 
  *     def runDisplacement(self,distance):             # <<<<<<<<<<<<<<
@@ -4907,11 +4979,11 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_9M_Virtual_7runDisplacement(
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_distance)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, 1); __PYX_ERR(0, 201, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, 1); __PYX_ERR(0, 202, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runDisplacement") < 0)) __PYX_ERR(0, 201, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runDisplacement") < 0)) __PYX_ERR(0, 202, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4924,7 +4996,7 @@ static PyObject *__pyx_pw_15motorcontrollib_6Motors_9M_Virtual_7runDisplacement(
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 201, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runDisplacement", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 202, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("motorcontrollib.Motors.M_Virtual.runDisplacement", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4952,16 +5024,16 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runDisplacement", 0);
 
-  /* "motorcontrollib/Motors.pyx":206
+  /* "motorcontrollib/Motors.pyx":207
  *             distance:The angle to travel
  *         """
  *         t1=t.time()             # <<<<<<<<<<<<<<
  *         print('distance: ',distance)
  *         print('time: ',distance/self.maxSpeed)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4976,20 +5048,20 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_t1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":207
+  /* "motorcontrollib/Motors.pyx":208
  *         """
  *         t1=t.time()
  *         print('distance: ',distance)             # <<<<<<<<<<<<<<
  *         print('time: ',distance/self.maxSpeed)
  *         print('Velocity: ',self.maxSpeed)
  */
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_s_distance_2);
   __Pyx_GIVEREF(__pyx_kp_s_distance_2);
@@ -4997,22 +5069,22 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   __Pyx_INCREF(__pyx_v_distance);
   __Pyx_GIVEREF(__pyx_v_distance);
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_distance);
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":208
+  /* "motorcontrollib/Motors.pyx":209
  *         t1=t.time()
  *         print('distance: ',distance)
  *         print('time: ',distance/self.maxSpeed)             # <<<<<<<<<<<<<<
  *         print('Velocity: ',self.maxSpeed)
  *         t2=t.time()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_s_time_2);
   __Pyx_GIVEREF(__pyx_kp_s_time_2);
@@ -5020,19 +5092,19 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_3);
   __pyx_t_3 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "motorcontrollib/Motors.pyx":209
+  /* "motorcontrollib/Motors.pyx":210
  *         print('distance: ',distance)
  *         print('time: ',distance/self.maxSpeed)
  *         print('Velocity: ',self.maxSpeed)             # <<<<<<<<<<<<<<
  *         t2=t.time()
  *         t.sleep((distance/self.maxSpeed)-(t2-t1))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 210, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_kp_s_Velocity);
   __Pyx_GIVEREF(__pyx_kp_s_Velocity);
@@ -5040,19 +5112,19 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 210, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":210
+  /* "motorcontrollib/Motors.pyx":211
  *         print('time: ',distance/self.maxSpeed)
  *         print('Velocity: ',self.maxSpeed)
  *         t2=t.time()             # <<<<<<<<<<<<<<
  *         t.sleep((distance/self.maxSpeed)-(t2-t1))
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -5067,32 +5139,32 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   }
   __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 210, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_t2 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":211
+  /* "motorcontrollib/Motors.pyx":212
  *         print('Velocity: ',self.maxSpeed)
  *         t2=t.time()
  *         t.sleep((distance/self.maxSpeed)-(t2-t1))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sleep); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sleep); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_v_distance, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Subtract(__pyx_v_t2, __pyx_v_t1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_t2, __pyx_v_t1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = PyNumber_Subtract(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Subtract(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5109,12 +5181,12 @@ static PyObject *__pyx_pf_15motorcontrollib_6Motors_9M_Virtual_6runDisplacement(
   __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":201
+  /* "motorcontrollib/Motors.pyx":202
  *         t.sleep((distance/degreesPs)-(t2-t1))
  * 
  *     def runDisplacement(self,distance):             # <<<<<<<<<<<<<<
@@ -5207,6 +5279,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_M_Virtual_runVelocityD, __pyx_k_M_Virtual_runVelocityD, sizeof(__pyx_k_M_Virtual_runVelocityD), 0, 0, 1, 1},
   {&__pyx_n_s_M_Virtual_runVelocityT, __pyx_k_M_Virtual_runVelocityT, sizeof(__pyx_k_M_Virtual_runVelocityT), 0, 0, 1, 1},
   {&__pyx_n_s_MotorTemplate, __pyx_k_MotorTemplate, sizeof(__pyx_k_MotorTemplate), 0, 0, 1, 1},
+  {&__pyx_n_s_MotorTemplate_getMaxSpeed, __pyx_k_MotorTemplate_getMaxSpeed, sizeof(__pyx_k_MotorTemplate_getMaxSpeed), 0, 0, 1, 1},
   {&__pyx_n_s_MotorTemplate_runDisplacement, __pyx_k_MotorTemplate_runDisplacement, sizeof(__pyx_k_MotorTemplate_runDisplacement), 0, 0, 1, 1},
   {&__pyx_n_s_MotorTemplate_runVelocityD, __pyx_k_MotorTemplate_runVelocityD, sizeof(__pyx_k_MotorTemplate_runVelocityD), 0, 0, 1, 1},
   {&__pyx_n_s_MotorTemplate_runVelocityT, __pyx_k_MotorTemplate_runVelocityT, sizeof(__pyx_k_MotorTemplate_runVelocityT), 0, 0, 1, 1},
@@ -5232,6 +5305,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_u_float, __pyx_k_float, sizeof(__pyx_k_float), 0, 1, 0, 1},
+  {&__pyx_n_s_getMaxSpeed, __pyx_k_getMaxSpeed, sizeof(__pyx_k_getMaxSpeed), 0, 0, 1, 1},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
@@ -5289,9 +5363,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 78, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 83, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 121, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -5301,31 +5375,31 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "motorcontrollib/Motors.pyx":120
+  /* "motorcontrollib/Motors.pyx":121
  *         """
  *         if degreesPs==0 or distance==0:
  *             raise ValueError('No zero values aloud')             # <<<<<<<<<<<<<<
  *         if degreesPs>self.maxSpeed:
  *             raise ValueError('Velocity to high')
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_No_zero_values_aloud); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_No_zero_values_aloud); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "motorcontrollib/Motors.pyx":122
+  /* "motorcontrollib/Motors.pyx":123
  *             raise ValueError('No zero values aloud')
  *         if degreesPs>self.maxSpeed:
  *             raise ValueError('Velocity to high')             # <<<<<<<<<<<<<<
  *         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
  *         neededTime=distance/degreesPs#calculates the required time to run
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Velocity_to_high); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Velocity_to_high); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
   /* "motorcontrollib/Motors.pyx":9
  * class MotorTemplate:
- * 
+ *     maxSpeed: float = 0.0
  *     def runDisplacement(self,degrees: float):             # <<<<<<<<<<<<<<
  *         pass
  * 
@@ -5359,152 +5433,164 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__8);
   __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityT, 15, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 15, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":39
+  /* "motorcontrollib/Motors.pyx":18
+ *         pass
+ * 
+ *     def getMaxSpeed(self):             # <<<<<<<<<<<<<<
+ *         return self.maxSpeed
+ * 
+ */
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__10);
+  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_getMaxSpeed, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 18, __pyx_L1_error)
+
+  /* "motorcontrollib/Motors.pyx":40
  *     stepPins=None
  * 
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):             # <<<<<<<<<<<<<<
  *         warnings.warn('this class does not support high precision or realtime operation')
  *         if maxSpeed!=None:
  */
-  __pyx_tuple__10 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_stepPins, __pyx_n_s_maxSpeed, __pyx_n_s_minWaitTime, __pyx_n_s_pin); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(4, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_init, 39, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __pyx_tuple__12 = PyTuple_Pack(2, ((PyObject *)Py_None), ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_stepPins, __pyx_n_s_maxSpeed, __pyx_n_s_minWaitTime, __pyx_n_s_pin); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(4, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_init, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(2, ((PyObject *)Py_None), ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
 
-  /* "motorcontrollib/Motors.pyx":59
+  /* "motorcontrollib/Motors.pyx":60
  * 
  * 
  *     def motor(self, float steps, float additionalWaitTime=0):             # <<<<<<<<<<<<<<
  *         """Runs the motor
  *         Args:
  */
-  __pyx_tuple__13 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_steps, __pyx_n_s_additionalWaitTime, __pyx_n_s_stepCount, __pyx_n_s_stepDir, __pyx_n_s_x, __pyx_n_s_stepCounter, __pyx_n_s_n, __pyx_n_s_sequence, __pyx_n_s_i, __pyx_n_s_currentPin); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(3, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_motor, 59, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_steps, __pyx_n_s_additionalWaitTime, __pyx_n_s_stepCount, __pyx_n_s_stepDir, __pyx_n_s_x, __pyx_n_s_stepCounter, __pyx_n_s_n, __pyx_n_s_sequence, __pyx_n_s_i, __pyx_n_s_currentPin); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(3, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_motor, 60, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 60, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":103
+  /* "motorcontrollib/Motors.pyx":104
  * 
  * 
  *     def runDisplacement(self,degrees):             # <<<<<<<<<<<<<<
  *         """A method to run a set distance
  *         Args:
  */
-  __pyx_tuple__15 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_degrees, __pyx_n_s_steps); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 103, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runDisplacement, 103, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_degrees, __pyx_n_s_steps); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runDisplacement, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 104, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":113
+  /* "motorcontrollib/Motors.pyx":114
  * 
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set distance
  *         Args:
  */
-  __pyx_tuple__17 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_distance, __pyx_n_s_minTime, __pyx_n_s_neededTime, __pyx_n_s_additionalWaitTime); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 113, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityD, 113, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_distance, __pyx_n_s_minTime, __pyx_n_s_neededTime, __pyx_n_s_additionalWaitTime); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityD, 114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 114, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":131
+  /* "motorcontrollib/Motors.pyx":132
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):#useful for time limited running in main program             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set time
  *         Args:
  */
-  __pyx_tuple__19 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_time, __pyx_n_s_distance, __pyx_n_s_minTime, __pyx_n_s_additionalWaitTime); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 131, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityT, 131, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_time, __pyx_n_s_distance, __pyx_n_s_minTime, __pyx_n_s_additionalWaitTime); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityT, 132, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 132, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":156
+  /* "motorcontrollib/Motors.pyx":157
  * 
  * 
  *     def convertDegrees(self,float degrees):             # <<<<<<<<<<<<<<
  *         '''convers degrees to steps for internal use within the function'''
  *         return degrees/self.motorDetails['baseAngle']
  */
-  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_degrees); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 156, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_convertDegrees, 156, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_degrees); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_convertDegrees, 157, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 157, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":160
+  /* "motorcontrollib/Motors.pyx":161
  *         return degrees/self.motorDetails['baseAngle']
  * 
  *     def setMinWaitTime(self,minWaitTime):             # <<<<<<<<<<<<<<
  *         self.minWaitTime=minWaitTime
  * 
  */
-  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_minWaitTime); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 160, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__23);
-  __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_setMinWaitTime, 160, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_minWaitTime); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 161, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
+  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_setMinWaitTime, 161, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 161, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":163
+  /* "motorcontrollib/Motors.pyx":164
  *         self.minWaitTime=minWaitTime
  * 
  *     def setMaxSpeed(self,maxSpeed):             # <<<<<<<<<<<<<<
  *         self.maxSpeed=maxSpeed
  * 
  */
-  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 163, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__25);
-  __Pyx_GIVEREF(__pyx_tuple__25);
-  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_setMaxSpeed, 163, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_maxSpeed); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_setMaxSpeed, 164, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 164, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":171
+  /* "motorcontrollib/Motors.pyx":172
  *     maxSpeed=48
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
  *         pass
  * 
  */
-  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 171, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_init, 171, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_init, 172, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 172, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":175
+  /* "motorcontrollib/Motors.pyx":176
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set time
  *         Args:
  */
-  __pyx_tuple__29 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_time, __pyx_n_s_t1, __pyx_n_s_t2); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 175, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityT, 175, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_tuple__31 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_time, __pyx_n_s_t1, __pyx_n_s_t2); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__31);
+  __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityT, 176, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 176, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":188
+  /* "motorcontrollib/Motors.pyx":189
  *         t.sleep(time-(t2-t1))
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set distance
  *         Args:
  */
-  __pyx_tuple__31 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_distance, __pyx_n_s_t1, __pyx_n_s_t2); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 188, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityD, 188, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_tuple__33 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_degreesPs, __pyx_n_s_distance, __pyx_n_s_t1, __pyx_n_s_t2); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runVelocityD, 189, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 189, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":201
+  /* "motorcontrollib/Motors.pyx":202
  *         t.sleep((distance/degreesPs)-(t2-t1))
  * 
  *     def runDisplacement(self,distance):             # <<<<<<<<<<<<<<
  *         """A method to run a set distance
  *         Args:
  */
-  __pyx_tuple__33 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_distance, __pyx_n_s_t1, __pyx_n_s_t2); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(0, 201, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__33);
-  __Pyx_GIVEREF(__pyx_tuple__33);
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runDisplacement, 201, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_tuple__35 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_distance, __pyx_n_s_t1, __pyx_n_s_t2); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 202, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__35);
+  __Pyx_GIVEREF(__pyx_tuple__35);
+  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_motorcontrollib_Motors_pyx, __pyx_n_s_runDisplacement, 202, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5514,6 +5600,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_float_0_0 = PyFloat_FromDouble(0.0); if (unlikely(!__pyx_float_0_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_48_0 = PyFloat_FromDouble(48.0); if (unlikely(!__pyx_float_48_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_0_0016 = PyFloat_FromDouble(0.0016); if (unlikely(!__pyx_float_0_0016)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_float_0_703125 = PyFloat_FromDouble(0.703125); if (unlikely(!__pyx_float_0_703125)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -5856,7 +5943,7 @@ if (!__Pyx_RefNanny) {
  * import RPi.GPIO as GPIO
  * import numpy             # <<<<<<<<<<<<<<
  * class MotorTemplate:
- * 
+ *     maxSpeed: float = 0.0
  */
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -5867,15 +5954,24 @@ if (!__Pyx_RefNanny) {
  * import RPi.GPIO as GPIO
  * import numpy
  * class MotorTemplate:             # <<<<<<<<<<<<<<
- * 
+ *     maxSpeed: float = 0.0
  *     def runDisplacement(self,degrees: float):
  */
   __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_MotorTemplate, __pyx_n_s_MotorTemplate, (PyObject *) NULL, __pyx_n_s_motorcontrollib_Motors, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
+  /* "motorcontrollib/Motors.pyx":8
+ * import numpy
+ * class MotorTemplate:
+ *     maxSpeed: float = 0.0             # <<<<<<<<<<<<<<
+ *     def runDisplacement(self,degrees: float):
+ *         pass
+ */
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_maxSpeed, __pyx_float_0_0) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+
   /* "motorcontrollib/Motors.pyx":9
  * class MotorTemplate:
- * 
+ *     maxSpeed: float = 0.0
  *     def runDisplacement(self,degrees: float):             # <<<<<<<<<<<<<<
  *         pass
  * 
@@ -5926,11 +6022,23 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_runVelocityT, __pyx_t_3) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
+  /* "motorcontrollib/Motors.pyx":18
+ *         pass
+ * 
+ *     def getMaxSpeed(self):             # <<<<<<<<<<<<<<
+ *         return self.maxSpeed
+ * 
+ */
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_13MotorTemplate_7getMaxSpeed, 0, __pyx_n_s_MotorTemplate_getMaxSpeed, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_getMaxSpeed, __pyx_t_3) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
   /* "motorcontrollib/Motors.pyx":7
  * import RPi.GPIO as GPIO
  * import numpy
  * class MotorTemplate:             # <<<<<<<<<<<<<<
- * 
+ *     maxSpeed: float = 0.0
  *     def runDisplacement(self,degrees: float):
  */
   __pyx_t_3 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_MotorTemplate, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 7, __pyx_L1_error)
@@ -5939,277 +6047,277 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "motorcontrollib/Motors.pyx":21
+  /* "motorcontrollib/Motors.pyx":22
  * 
  * 
  * class M_28BJY48_ULN2003_RPI(MotorTemplate):             # <<<<<<<<<<<<<<
  *     """A class to control the 28BYJ48 and ULN2003 motor
  *     Attributes:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MotorTemplate); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MotorTemplate); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_3, __pyx_n_s_M_28BJY48_ULN2003_RPI, __pyx_n_s_M_28BJY48_ULN2003_RPI, (PyObject *) NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_kp_s_A_class_to_control_the_28BYJ48_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_3, __pyx_n_s_M_28BJY48_ULN2003_RPI, __pyx_n_s_M_28BJY48_ULN2003_RPI, (PyObject *) NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_kp_s_A_class_to_control_the_28BYJ48_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "motorcontrollib/Motors.pyx":32
+  /* "motorcontrollib/Motors.pyx":33
  *     #cdef:
  *     #    float x
  *     motorDetails: dict = {'motorName':'28BJY-48','controllerName':'ULN2003','voltage':5,'baseAngle':0.087890625,'useAngle1':0.703125,'useAngle2':0.3515625}             # <<<<<<<<<<<<<<
  * 
  *     #sequence:list = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]
  */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_motorName, __pyx_kp_s_28BJY_48) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_controllerName, __pyx_n_s_ULN2003) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_voltage, __pyx_int_5) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_baseAngle, __pyx_float_0_087890625) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_useAngle1, __pyx_float_0_703125) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_useAngle2, __pyx_float_0_3515625) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_motorDetails, __pyx_t_4) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_motorName, __pyx_kp_s_28BJY_48) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_controllerName, __pyx_n_s_ULN2003) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_voltage, __pyx_int_5) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_baseAngle, __pyx_float_0_087890625) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_useAngle1, __pyx_float_0_703125) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_useAngle2, __pyx_float_0_3515625) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_motorDetails, __pyx_t_4) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":35
+  /* "motorcontrollib/Motors.pyx":36
  * 
  *     #sequence:list = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]
  *     maxSpeed: float = 48.0 #approximate experimental value             # <<<<<<<<<<<<<<
  *     minWaitTime: float = 0.0016
  *     stepPins=None
  */
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_maxSpeed, __pyx_float_48_0) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_maxSpeed, __pyx_float_48_0) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":36
+  /* "motorcontrollib/Motors.pyx":37
  *     #sequence:list = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]
  *     maxSpeed: float = 48.0 #approximate experimental value
  *     minWaitTime: float = 0.0016             # <<<<<<<<<<<<<<
  *     stepPins=None
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_minWaitTime, __pyx_float_0_0016) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_minWaitTime, __pyx_float_0_0016) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":37
+  /* "motorcontrollib/Motors.pyx":38
  *     maxSpeed: float = 48.0 #approximate experimental value
  *     minWaitTime: float = 0.0016
  *     stepPins=None             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):
  */
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_stepPins, Py_None) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_stepPins, Py_None) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":39
+  /* "motorcontrollib/Motors.pyx":40
  *     stepPins=None
  * 
  *     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):             # <<<<<<<<<<<<<<
  *         warnings.warn('this class does not support high precision or realtime operation')
  *         if maxSpeed!=None:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_1__init__, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI___init, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_1__init__, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI___init, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_tuple__12);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_tuple__14);
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":59
+  /* "motorcontrollib/Motors.pyx":60
  * 
  * 
  *     def motor(self, float steps, float additionalWaitTime=0):             # <<<<<<<<<<<<<<
  *         """Runs the motor
  *         Args:
  */
-  __pyx_t_4 = PyFloat_FromDouble(((float)0.0)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(((float)0.0)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_3motor, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_motor, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_3motor, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_motor, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_motor, __pyx_t_4) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_motor, __pyx_t_4) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":103
+  /* "motorcontrollib/Motors.pyx":104
  * 
  * 
  *     def runDisplacement(self,degrees):             # <<<<<<<<<<<<<<
  *         """A method to run a set distance
  *         Args:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_5runDisplacement, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_runDisplac, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_5runDisplacement, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_runDisplac, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runDisplacement, __pyx_t_4) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runDisplacement, __pyx_t_4) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":113
+  /* "motorcontrollib/Motors.pyx":114
  * 
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set distance
  *         Args:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_7runVelocityD, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_runVelocit, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_7runVelocityD, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_runVelocit, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityD, __pyx_t_4) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityD, __pyx_t_4) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":131
+  /* "motorcontrollib/Motors.pyx":132
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):#useful for time limited running in main program             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set time
  *         Args:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_9runVelocityT, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_runVelocit_2, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_9runVelocityT, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_runVelocit_2, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityT, __pyx_t_4) < 0) __PYX_ERR(0, 131, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityT, __pyx_t_4) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":156
+  /* "motorcontrollib/Motors.pyx":157
  * 
  * 
  *     def convertDegrees(self,float degrees):             # <<<<<<<<<<<<<<
  *         '''convers degrees to steps for internal use within the function'''
  *         return degrees/self.motorDetails['baseAngle']
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_11convertDegrees, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_convertDeg, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_11convertDegrees, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_convertDeg, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_convertDegrees, __pyx_t_4) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_convertDegrees, __pyx_t_4) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":160
+  /* "motorcontrollib/Motors.pyx":161
  *         return degrees/self.motorDetails['baseAngle']
  * 
  *     def setMinWaitTime(self,minWaitTime):             # <<<<<<<<<<<<<<
  *         self.minWaitTime=minWaitTime
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_13setMinWaitTime, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_setMinWait, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_13setMinWaitTime, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_setMinWait, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_setMinWaitTime, __pyx_t_4) < 0) __PYX_ERR(0, 160, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_setMinWaitTime, __pyx_t_4) < 0) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":163
+  /* "motorcontrollib/Motors.pyx":164
  *         self.minWaitTime=minWaitTime
  * 
  *     def setMaxSpeed(self,maxSpeed):             # <<<<<<<<<<<<<<
  *         self.maxSpeed=maxSpeed
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_15setMaxSpeed, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_setMaxSpee, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_21M_28BJY48_ULN2003_RPI_15setMaxSpeed, 0, __pyx_n_s_M_28BJY48_ULN2003_RPI_setMaxSpee, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_setMaxSpeed, __pyx_t_4) < 0) __PYX_ERR(0, 163, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_setMaxSpeed, __pyx_t_4) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":21
+  /* "motorcontrollib/Motors.pyx":22
  * 
  * 
  * class M_28BJY48_ULN2003_RPI(MotorTemplate):             # <<<<<<<<<<<<<<
  *     """A class to control the 28BYJ48 and ULN2003 motor
  *     Attributes:
  */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_M_28BJY48_ULN2003_RPI, __pyx_t_3, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_M_28BJY48_ULN2003_RPI, __pyx_t_3, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_M_28BJY48_ULN2003_RPI, __pyx_t_4) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_M_28BJY48_ULN2003_RPI, __pyx_t_4) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "motorcontrollib/Motors.pyx":167
+  /* "motorcontrollib/Motors.pyx":168
  * 
  * 
  * class M_Virtual(MotorTemplate):             # <<<<<<<<<<<<<<
  *     """A virtual Motor to allow the library to be used for testing when a real motor is not available"""
  *     maxSpeed=48
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MotorTemplate); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MotorTemplate); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_Py3MetaclassPrepare(__pyx_t_3, __pyx_t_2, __pyx_n_s_M_Virtual, __pyx_n_s_M_Virtual, (PyObject *) NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_kp_s_A_virtual_Motor_to_allow_the_lib); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Py3MetaclassPrepare(__pyx_t_3, __pyx_t_2, __pyx_n_s_M_Virtual, __pyx_n_s_M_Virtual, (PyObject *) NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_kp_s_A_virtual_Motor_to_allow_the_lib); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "motorcontrollib/Motors.pyx":169
+  /* "motorcontrollib/Motors.pyx":170
  * class M_Virtual(MotorTemplate):
  *     """A virtual Motor to allow the library to be used for testing when a real motor is not available"""
  *     maxSpeed=48             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self):
  */
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_maxSpeed, __pyx_int_48) < 0) __PYX_ERR(0, 169, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_maxSpeed, __pyx_int_48) < 0) __PYX_ERR(0, 170, __pyx_L1_error)
 
-  /* "motorcontrollib/Motors.pyx":171
+  /* "motorcontrollib/Motors.pyx":172
  *     maxSpeed=48
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
  *         pass
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_1__init__, 0, __pyx_n_s_M_Virtual___init, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_1__init__, 0, __pyx_n_s_M_Virtual___init, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":175
+  /* "motorcontrollib/Motors.pyx":176
  * 
  * 
  *     def runVelocityT(self,degreesPs,time):             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set time
  *         Args:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_3runVelocityT, 0, __pyx_n_s_M_Virtual_runVelocityT, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_3runVelocityT, 0, __pyx_n_s_M_Virtual_runVelocityT, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityT, __pyx_t_4) < 0) __PYX_ERR(0, 175, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityT, __pyx_t_4) < 0) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":188
+  /* "motorcontrollib/Motors.pyx":189
  *         t.sleep(time-(t2-t1))
  * 
  *     def runVelocityD(self,degreesPs,distance):             # <<<<<<<<<<<<<<
  *         """A method to run at a set speed for a set distance
  *         Args:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_5runVelocityD, 0, __pyx_n_s_M_Virtual_runVelocityD, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_5runVelocityD, 0, __pyx_n_s_M_Virtual_runVelocityD, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityD, __pyx_t_4) < 0) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runVelocityD, __pyx_t_4) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":201
+  /* "motorcontrollib/Motors.pyx":202
  *         t.sleep((distance/degreesPs)-(t2-t1))
  * 
  *     def runDisplacement(self,distance):             # <<<<<<<<<<<<<<
  *         """A method to run a set distance
  *         Args:
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_7runDisplacement, 0, __pyx_n_s_M_Virtual_runDisplacement, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_15motorcontrollib_6Motors_9M_Virtual_7runDisplacement, 0, __pyx_n_s_M_Virtual_runDisplacement, NULL, __pyx_n_s_motorcontrollib_Motors, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runDisplacement, __pyx_t_4) < 0) __PYX_ERR(0, 201, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_runDisplacement, __pyx_t_4) < 0) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "motorcontrollib/Motors.pyx":167
+  /* "motorcontrollib/Motors.pyx":168
  * 
  * 
  * class M_Virtual(MotorTemplate):             # <<<<<<<<<<<<<<
  *     """A virtual Motor to allow the library to be used for testing when a real motor is not available"""
  *     maxSpeed=48
  */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_3, __pyx_n_s_M_Virtual, __pyx_t_2, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_3, __pyx_n_s_M_Virtual, __pyx_t_2, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_M_Virtual, __pyx_t_4) < 0) __PYX_ERR(0, 167, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_M_Virtual, __pyx_t_4) < 0) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
