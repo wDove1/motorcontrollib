@@ -5,6 +5,7 @@ import warnings
 import RPi.GPIO as GPIO
 import numpy
 class MotorTemplate:
+    """A template class for other motorcontrol classes"""
     maxSpeed: float = 0.0
     def runDisplacement(self,degrees: float):
         pass
@@ -17,6 +18,10 @@ class MotorTemplate:
  
     def getMaxSpeed(self):
         return self.maxSpeed 
+
+    
+    def setMaxSpeed(self,maxSpeed):
+        self.maxSpeed=maxSpeed
 
 
 class M_28BJY48_ULN2003_RPI(MotorTemplate):
@@ -38,6 +43,7 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
     stepPins=None
 
     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):
+        import RPi.GPIO as GPIO
         warnings.warn('this class does not support high precision or realtime operation')
         if maxSpeed!=None:
             self.maxSpeed=maxSpeed
