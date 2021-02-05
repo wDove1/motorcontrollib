@@ -7,6 +7,8 @@ import numpy
 class MotorTemplate:
     """A template class for other motorcontrol classes"""
     maxSpeed: float = 0.0
+    relativeDisplacement: float = 0.0
+    
     def runDisplacement(self,degrees: float):
         pass
 
@@ -23,6 +25,12 @@ class MotorTemplate:
     def setMaxSpeed(self,maxSpeed):
         self.maxSpeed=maxSpeed
 
+    def getRelativePosition(self):
+        return self.relativeDisplacment
+
+    def resetRelativeDispacement(self):
+        self.relativeDisplacement=0
+
 
 class M_28BJY48_ULN2003_RPI(MotorTemplate):
     """A class to control the 28BYJ48 and ULN2003 motor
@@ -35,31 +43,50 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
     """
     #cdef:
     #    float x
-    motorDetails: dict = {'motorName':'28BJY-48','controllerName':'ULN2003','voltage':5,'baseAngle':0.087890625,'useAngle1':0.703125,'useAngle2':0.3515625}
+    motorDetails: dict = {'motorName':'28BJY-48','controllerName':'ULN2003','voltage':5,'baseAngle':0.087890625,'useAngle1':0.703125,'useAngle2':0.3515625}#defines the details of the motor
 
     #sequence:list = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]
     maxSpeed: float = 48.0 #approximate experimental value
-    minWaitTime: float = 0.0016
+    minWaitTime: float = 0.0016#defines the corresponding minimum wait time
     stepPins=None
 
     def __init__(self,stepPins,maxSpeed=None,minWaitTime=None):
         import RPi.GPIO as GPIO
         warnings.warn('this class does not support high precision or realtime operation')
-        if maxSpeed!=None:
-            self.maxSpeed=maxSpeed
+        
+        if maxSpeed!=None:#checks defaults are not being used
+            if isinstance(maxSpeed,(float,int)):#checks if maxSpeed is of type float or int as both must be checked for
+                if maxSpeed>0:#checks the speed is positive
+                    self.maxSpeed=maxSpeed#sets the speed
+                else:
+                    raise ValueError("maxSpeed must be greater than 0")#raises errors
+            else:
+                raise ValueError("maxSpeed must be float,int")
+
         if minWaitTime!=None:
-            self.minWaitTime=minWaitTime
+            if isinstance(minWaitTime,(float,int)):
+                if minWaitTime>0:
+                    self.minWaitTime=minWaitTime
+                else:
+                    raise ValueError("minWaitTime must be greater than 0")
+            else:
+                raise ValueError("minWaitTime must be float,int")           
+        
         # Use BCM GPIO references
         # instead of physical pin numbers
         GPIO.setmode(GPIO.BCM)
         # Define GPIO signals to use
         # Physical pins 11,15,16,18
         # GPIO17,GPIO22,GPIO23,GPIO24
-        self.stepPins = stepPins
+        if not checkGPIOPins(stepPins):#checks if the pins are invalid
+            raise ValueError("incorrect pins")#raises error
+        self.stepPins = stepPins#assigns the pins
+        
+            
         # Set all pins as output
         for pin in self.stepPins:
             #print("Setup pins")
-            GPIO.setup(pin,GPIO.OUT)
+            GPIO.setup(pin,GPIO.OUT)#sets the pins as outputs
             GPIO.output(pin, False)
             
 
@@ -71,40 +98,39 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
 
 
         """
-        cdef int stepCount, stepDir, x, stepCounter, n
+        cdef int stepCount, stepDir, x, stepCounter, n #defines integer variables
         
-        sequence = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]
+        sequence = [[1,0,0,1],[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,1,1],[0,0,0,1]]#defines the sequence
 
 
         stepCount = 8
         if steps<0:
-            stepDir=-1
+            stepDir=-1#sets if the step direction is positive or negative
         else:
             stepDir=1
 
-        x=round(steps)
+        x=round(steps)#the number of steps must always be a positive integer
         if x<=0:
             x=-x#must always be positive
 
         stepCounter = 0
-        for i in range(0,x):
+        for i in range(0,x):#loops through the number of movements
             for n in range(0,4):
                 currentPin = self.stepPins[n]
                 if sequence[stepCounter][n]==1:
                     GPIO.output(currentPin,True)
-                else:#see if this is redundant
+                else:
                     GPIO.output(currentPin,False)
 
             stepCounter += stepDir
-          # If we reach the end of the sequence
-          # start again
-            if (stepCounter==stepCount):
+
+            if (stepCounter==stepCount):#goes back to the the start of the loop
                 stepCounter = 0
                 
-            if (stepCounter<0):
+            if (stepCounter<0):#goes to the end of the loop
                 stepCounter = 7
-          # Wait before moving on
-            t.sleep(self.minWaitTime+additionalWaitTime)
+
+            t.sleep(self.minWaitTime+additionalWaitTime)#delays the next movement
             
 
     def runDisplacement(self,degrees):
@@ -112,6 +138,8 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
         Args:
             distance:The angle to travel
         """
+        if not isinstance(degrees,(float,int)):#checks the type of degrees
+            raise ValueError("degrees must be float,int")
         steps=self.convertDegrees(degrees)
         #print(steps)
         self.motor(steps)
@@ -122,16 +150,24 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
         Args:
             degreesPs:The angular velocity
             distance:The distance to run for
-        """     
+        """
+        #checks the type of the variables
+        if not isinstance(degreesPs,(float,int)):
+            raise ValueError("degreesPs must be int,float")
+        if not isinstance(distance,(float,int)):
+            raise ValueError("distance must be int,float")
+        #checks the variables are in range
         if degreesPs==0 or distance==0:
             raise ValueError('No zero values aloud')
-        if degreesPs>self.maxSpeed:
+        if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:
             raise ValueError('Velocity to high')
+        if distance<0:
+            raise ValueError("distance must be positive")
         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
         neededTime=distance/degreesPs#calculates the required time to run
         additionalWaitTime=(neededTime-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
-        if additionalWaitTime<0:
-            additionalWaitTime=-additionalWaitTime        
+        if additionalWaitTime<0:#additionalWaitTime must be psoitive
+            additionalWaitTime=-additionalWaitTime       
         self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor
 
 
@@ -145,18 +181,24 @@ class M_28BJY48_ULN2003_RPI(MotorTemplate):
         """
         #print(self.maxSpeed)
         #print(degreesPs)
-
+        if not isinstance(degreesPs,(float,int)):
+            raise ValueError("degreesPs must be int,float")
+        if not isinstance(time,(float,int)):
+            raise ValueError("time must be int,float")
         if degreesPs==0 or time==0:
             raise ValueError('No zero values aloud')
         if degreesPs > self.maxSpeed or degreesPs < -self.maxSpeed:
             raise ValueError('Velocity to high')
+        if time<0:
+            raise ValueError("time must be positive")
 
         distance=degreesPs*time#calculates the distance
         minTime=distance/self.maxSpeed#calculates the minimum time the motor can finish the rotation
         additionalWaitTime=(time-minTime)/self.convertDegrees(distance)#calculates the differece in times and splits it so it is added across wait times
         if additionalWaitTime<0:
             additionalWaitTime=-additionalWaitTime
-        self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor        
+        self.motor(self.convertDegrees(distance),additionalWaitTime)#runs the motor
+        self.relativeDisplacement+=distance
 
         
 
@@ -217,5 +259,25 @@ class M_Virtual(MotorTemplate):
         t2=t.time()
         t.sleep((distance/self.maxSpeed)-(t2-t1))
 
-        
+def checkGPIOPins(GPIOPins):
+    if isinstance(GPIOPins,list):#checks the type of the data
+        if len(GPIOPins)==4:#checks the lists length
+            for j in range(4):
+                if not isinstance(GPIOPins[j],(float,int)):#checks the type of the data in the list
+                    return False
+            #checks the uniqueness of the elements
+            allUnique=True
+            for i in range(4):
+                value=GPIOPins[i]
+                for n in range(0,4):
+                    if n!=i and GPIOPins[n]==value:
+                        allUnique=False
+            return allUnique
+        else:
+            return False
+    else:
+        return False
+		
+	     
+		
 
